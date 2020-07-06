@@ -1,16 +1,16 @@
 {
-    "name": "#{REPO_NAME}#",
+    "name": "event_loop_and_promises",
     "version": "0.0.0",
-    "description": "#{DESC}#",
+    "description": "",
     "repository": {
         "type": "git",
-        "url": "git://github.com/#{USER_OR_ORG}#/#{REPO_NAME}#.git"
+        "url": "git://github.com/thieryw/event_loop_and_promises.git"
     },
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
         "test": "node ./dist/test",
-        "cdn:bundle:.js": "simplifyify dist/index.js -s #{REPO_NAME_NO_DASHES}# -o dist/bundle.js --debug --bundle",
+        "cdn:bundle:.js": "simplifyify dist/index.js -s event_loop_and_promises -o dist/bundle.js --debug --bundle",
         "cdn:bundle:.min.js": "terser dist/bundle.js -cmo dist/bundle.min.js",
         "cdn:bundle": "npm run cdn:bundle:.js && npm run cdn:bundle:.min.js",
         "cdn:esm": "tsc -p tsconfig.esm.json",
@@ -37,7 +37,7 @@
             "pre-commit": "lint-staged -v"
         }
     },
-    "author": "u/#{USER_OR_ORG}#",
+    "author": "u/thieryw",
     "license": "MIT",
     "files": [
         "/dist/*.{d.ts,js,js.map}",
@@ -47,7 +47,7 @@
         "/src/tools/"
     ],
     "keywords": [],
-    "homepage": "https://github.com/#{USER_OR_ORG}#/#{REPO_NAME}#",
+    "homepage": "https://github.com/thieryw/event_loop_and_promises",
     "devDependencies": {
         "typescript": "^3.9.0",
         "@types/node": "^10.0.0",
