@@ -1,109 +1,94 @@
-import * as fs from "fs";
-import * as path from "path";
+function createRecipeMap() {
+    const recipes = new Map();
 
-function readFile(filePath: string): Promise<Buffer> {
+    recipes.set(100, { author: "william", name: "cherry trifle" });
+    recipes.set(101, { author: "joseph", name: "christmass pudding" });
+    recipes.set(102, { author: "florian", name: "silabub" });
+    recipes.set(103, { author: "alexy", name: "lemon curd" });
+
+    return recipes;
+}
+
+const getRecipeIds = (() => {
     return new Promise(resolve => {
-        fs.readFile(filePath, (err, buffer) => {
-            if (err) {
-                throw err;
-            }
-            resolve(buffer);
-        });
-    });
-}
-
-const prBuffer = readFile("../../package.json");
-
-prBuffer.then(buffer => {
-    console.log(buffer.toString("utf8"));
-});
-
-fs.readFile(path.join(__dirname, "..", "package.json"), (err, buffer) => {
-    if (err) {
-        throw err;
-    }
-
-    console.log(buffer.toString());
-});
-
-try {
-    const buffer = fs.readFileSync("../../package.json");
-
-    console.log(buffer.toString("utf8"));
-} catch (error) {
-    console.log(error.message);
-
-    throw error;
-}
-
-console.log("a");
-
-/*
-function dummy(
-    str: string,
-): Promise<string> {
-
-    return new Promise(
-        resolve=> {
-
-            setTimeout(()=> {
-
-                resolve(`>${str}<`);
-
-            }, 1000);
-
-        }
-    );
-
-}
-*/
-
-async function dummy(str: string): Promise<string> {
-    await new Promise<void>(resolve => setTimeout(() => resolve(), 1000));
-
-    return `>${str}<`;
-}
-
-const x = dummy("Hello World");
-
-console.log(x);
-
-/*
-console.log("e");
-
-const prResult = dummy("Hello World");
-
-console.log("f");
-
-
-prResult.then(
-    result=> {
-
-        console.log("g");
-
-        console.log(result);
-    }
-);
-
-console.log("h");
-*/
-
-(async () => {
-    const prN = new Promise<number>(resolve => {
         setTimeout(() => {
-            resolve(33);
-        }, 1000);
+            resolve(createRecipeMap());
+        }, 1500);
+    });
+})();
+
+const getRecipeName = (id: number, recipes: any) => {
+    return new Promise<string>((resolve, reject) => {
+        setTimeout(
+            () => {
+                if (recipes.has(id)) {
+                    resolve(`${id} : ${recipes.get(id).name}`);
+                    return;
+                }
+
+                reject("fatal error");
+            },
+            1500,
+            id,
+            recipes,
+        );
+    });
+};
+
+const getRecipeAuthor = (id: number, recipes: any) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(
+            () => {
+                if (recipes.has(id)) {
+                    resolve(
+                        `${recipes.get(id).name} : ${recipes.get(id).author}`,
+                    );
+                    return;
+                }
+
+                reject("fatal error");
+            },
+            1500,
+            id,
+            recipes,
+        );
+    });
+};
+
+getRecipeIds
+    .then(ids => {
+        console.log(ids);
+        return {
+            authorPr: getRecipeAuthor(103, ids),
+            namePr: getRecipeName(101, ids),
+        };
+    })
+    .then(prs => {
+        prs.authorPr
+            .then(author => {
+                console.log(author);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        prs.namePr
+            .then(name => {
+                console.log(name);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     });
 
-    const n = await prN;
+function showOkAMillionTimes() {
+    for (let i = 0; i < 10; i++) {
+        console.log("ok");
+    }
+}
 
-    console.log(n);
-
-    const result = await dummy("Hello World");
-
-    console.log(result);
-
-    console.log(await dummy("One"));
-    console.log(await dummy("Two"));
-    console.log(await dummy("Three"));
-})();
+new Promise(resolve => {
+    resolve(showOkAMillionTimes());
+}).then(() => {
+    console.log("fuck");
+});
